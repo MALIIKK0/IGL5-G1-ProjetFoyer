@@ -1,5 +1,6 @@
 package tn.esprit.tpfoyer17.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +32,8 @@ public class UniversiteService implements IUniversiteService{
 
     @Override
     public Universite getUniversiteById(long idUniversite) {
-        return universiteRepository.findById(idUniversite).get();
+        return universiteRepository.findById(idUniversite)
+                .orElseThrow(() -> new EntityNotFoundException("Universite not found with id: " + idUniversite));
     }
 
     @Override
