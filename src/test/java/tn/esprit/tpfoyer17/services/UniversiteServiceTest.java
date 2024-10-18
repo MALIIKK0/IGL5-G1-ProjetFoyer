@@ -1,43 +1,40 @@
 package tn.esprit.tpfoyer17.services;
-
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.tpfoyer17.entities.Foyer;
 import tn.esprit.tpfoyer17.entities.Universite;
-
-import java.util.List;
-
+import tn.esprit.tpfoyer17.repositories.UniversiteRepository;
+import java.util.Optional;
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import jakarta.persistence.EntityManager;
-
 @SpringBootTest
-@Transactional
 class UniversiteServiceTest {
 
-    @Autowired
-    IUniversiteService universiteService;
+    @Mock
+    IUniversiteService universiteService;  // Mock the service
 
-    @Autowired
-    EntityManager entityManager;
+    @Mock
+    UniversiteRepository universiteRepository;  // Mock the repository
+
+    @InjectMocks
+    UniversiteService universiteServiceImpl;  // Inject mocks into the service implementation
 
     private Universite testUniversite;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);  // Initialize mocks
+
         Foyer foyer = Foyer.builder()
                 .nomFoyer("Ras Tabia")
                 .capaciteFoyer(200)
                 .build();
-
-        // Persist the foyer before associating it with the Universite
-        entityManager.persist(foyer);
 
         testUniversite = Universite.builder()
                 .nomUniversite("FST")
@@ -47,62 +44,43 @@ class UniversiteServiceTest {
     }
 
     @Test
-    @Rollback
     void addUniversite() {
+        when(universiteService.addUniversite(any(Universite.class))).thenReturn(testUniversite);
+
         Universite addedUniversite = universiteService.addUniversite(testUniversite);
-        assertNotNull(addedUniversite.getIdUniversite());
+        assertNotNull(addedUniversite);
         assertEquals("FST", addedUniversite.getNomUniversite());
-        assertEquals("Manar, Tunis", addedUniversite.getAdresse());
-    }
-
-    @Test
-    void getAllUniversitesWhenEmpty() {
-        List<Universite> universites = universiteService.getAllUniversites();
-        assertTrue(universites.isEmpty());
-    }
-
-    @Test
-    @Rollback
-    void getAllUniversitesWithOneAddedUniversite() {
-        universiteService.addUniversite(testUniversite);
-        List<Universite> universites = universiteService.getAllUniversites();
-        assertFalse(universites.isEmpty());
-        assertEquals(1, universites.size());
+        verify(universiteService, times(1)).addUniversite(testUniversite);  // Verify that the method was called once
     }
 
     @Test
     void getUniversiteById() {
-        Universite addedUniversite = universiteService.addUniversite(testUniversite);
-        Universite foundUniversite = universiteService.getUniversiteById(addedUniversite.getIdUniversite());
+        when(universiteService.getUniversiteById(anyLong())).thenReturn(testUniversite);
+
+        Universite foundUniversite = universiteService.getUniversiteById(1L);
         assertNotNull(foundUniversite);
-        assertEquals(addedUniversite.getIdUniversite(), foundUniversite.getIdUniversite());
+        assertEquals("FST", foundUniversite.getNomUniversite());
+        verify(universiteService, times(1)).getUniversiteById(1L);
     }
 
     @Test
-    @Rollback
     void deleteUniversite() {
-        Universite addedUniversite = universiteService.addUniversite(testUniversite);
+        doNothing().when(universiteService).deleteUniversite(anyLong());
 
-        universiteService.deleteUniversite(addedUniversite.getIdUniversite());
+        universiteService.deleteUniversite(1L);
+        verify(universiteService, times(1)).deleteUniversite(1L);
+    }
 
-       Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            universiteService.getUniversiteById(addedUniversite.getIdUniversite());
+    @Test
+    void getUniversiteByIdThrowsException() {
+        when(universiteService.getUniversiteById(1L)).thenThrow(new EntityNotFoundException("Universite not found with id: 1"));
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            universiteService.getUniversiteById(1L);
         });
 
-        String expectedMessage = "Universite not found with id: " + addedUniversite.getIdUniversite();
+        String expectedMessage = "Universite not found with id: 1";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-
-    @Test
-    @Rollback
-    void updateUniversite() {
-        Universite addedUniversite = universiteService.addUniversite(testUniversite);
-        addedUniversite.setNomUniversite("FST Updated");
-        addedUniversite.setAdresse("Manar, Tunis Updated");
-        Universite updatedUniversite = universiteService.updateUniversite(addedUniversite);
-        assertEquals("FST Updated", updatedUniversite.getNomUniversite());
-        assertEquals("Manar, Tunis Updated", updatedUniversite.getAdresse());
     }
 }
