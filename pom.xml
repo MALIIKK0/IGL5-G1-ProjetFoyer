@@ -105,7 +105,7 @@
         <repository>
             <id>deploymentRepo</id>
             <name>Foyer Repository</name>
-            <url>http://nexus:8081/repository/maven-releases/</url>
+            <url>http://nexus:8081/repository/maven-snapshots/</url>
         </repository>
     </distributionManagement>
 </project>
