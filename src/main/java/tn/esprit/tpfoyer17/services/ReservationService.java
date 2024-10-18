@@ -72,7 +72,8 @@ public class ReservationService implements IReservationService{
         } else {
             List<Etudiant> etudiants = new ArrayList<Etudiant>();
             etudiants.add(etudiantRepository.findByCinEtudiant(cinEtudiant));
-            Reservation reservation = Reservation.builder().anneeUniversitaire(new Date()).etudiants((Set<Etudiant>) etudiants).build();
+            Set<Etudiant> etudiantsSet = new HashSet<>(etudiants);
+            Reservation reservation = Reservation.builder().anneeUniversitaire(new Date()).etudiants(etudiantsSet).build();
             Chambre chambre = chambreRepository.getForReservation(idBloc);
             Bloc bloc =blocRepository.findById(idBloc).get();
             Calendar calendar = Calendar.getInstance();
