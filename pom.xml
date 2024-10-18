@@ -101,4 +101,11 @@
         </profile>
     </profiles>
 
+    <distributionManagement>
+        <repository>
+            <id>deploymentRepo</id>
+            <name>Foyer Repository</name>
+            <url>http://nexus:8081/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
 </project>
