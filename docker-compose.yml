@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tpFoyer17
+    ports:
+      - "3306:3306"
+    networks:
+      - springboot-mysql-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  springboot-app:
+    image: fadyzaafrane/tpfoyer-17:${IMAGE_TAG}
+    container_name: springboot-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/tpFoyer17
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SERVER_PORT: 8080
+    ports:
+      - "8082:8080"
+    depends_on:
+      - db
+    networks:
+      - springboot-mysql-network
+
+networks:
+  springboot-mysql-network:
+
+volumes:
+  mysql-data:
