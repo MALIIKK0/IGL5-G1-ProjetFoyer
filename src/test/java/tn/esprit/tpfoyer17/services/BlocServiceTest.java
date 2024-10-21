@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class BlocServiceTest {
+class BlocServiceTest {
 
     @Mock
     private BlocRepository blocRepository;
@@ -29,12 +29,12 @@ public class BlocServiceTest {
     private BlocService blocService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testAddBloc() {
+    void testAddBloc() {
         Bloc bloc = new Bloc();
         when(blocRepository.save(bloc)).thenReturn(bloc);
 
@@ -45,7 +45,7 @@ public class BlocServiceTest {
     }
 
     @Test
-    public void testGetAllBlocs() {
+    void testGetAllBlocs() {
         List<Bloc> mockBlocs = new ArrayList<>();
         when(blocRepository.findAll()).thenReturn(mockBlocs);
 
@@ -56,7 +56,7 @@ public class BlocServiceTest {
     }
 
     @Test
-    public void testGetBlocById() {
+    void testGetBlocById() {
         long idBloc = 1L;
         Bloc mockBloc = new Bloc();
         when(blocRepository.findById(idBloc)).thenReturn(Optional.of(mockBloc));
@@ -68,7 +68,7 @@ public class BlocServiceTest {
     }
 
     @Test
-    public void testGetBlocById_NotFound() {
+    void testGetBlocById_NotFound() {
         long idBloc = 1L;
         when(blocRepository.findById(idBloc)).thenReturn(Optional.empty());
 
@@ -78,7 +78,7 @@ public class BlocServiceTest {
     }
 
     @Test
-    public void testDeleteBloc() {
+    void testDeleteBloc() {
         long idBloc = 1L;
 
         blocService.deleteBloc(idBloc);
@@ -87,7 +87,7 @@ public class BlocServiceTest {
     }
 
     @Test
-    public void testUpdateBloc() {
+    void testUpdateBloc() {
         Bloc bloc = new Bloc();
         when(blocRepository.save(bloc)).thenReturn(bloc);
 
@@ -98,13 +98,12 @@ public class BlocServiceTest {
     }
 
     @Test
-    public void testAffecterChambresABloc() {
+    void testAffecterChambresABloc() {
         long idBloc = 1L;
         List<Long> chambreIds = List.of(1L, 2L, 3L);
         Bloc mockBloc = new Bloc();
         List<Chambre> mockChambres = new ArrayList<>();
 
-        // Create and assign mock Chambres
         for (long chambreId : chambreIds) {
             Chambre chambre = new Chambre();
             chambre.setIdChambre(chambreId);
@@ -114,7 +113,7 @@ public class BlocServiceTest {
         when(blocRepository.findById(idBloc)).thenReturn(Optional.of(mockBloc));
         when(chambreRepository.findAllById(chambreIds)).thenReturn(mockChambres);
 
-        Bloc result = blocService.affecterChambresABloc(chambreIds, idBloc);
+        blocService.affecterChambresABloc(chambreIds, idBloc);
 
         for (Chambre chambre : mockChambres) {
             assertEquals(mockBloc, chambre.getBloc());
