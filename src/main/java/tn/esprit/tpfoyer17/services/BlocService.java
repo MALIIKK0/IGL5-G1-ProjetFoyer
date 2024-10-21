@@ -48,11 +48,13 @@ public class BlocService implements IBlocService{
     public Bloc affecterChambresABloc(List<Long> numChambre, long idBloc) {
         Bloc bloc = blocRepository.findById(idBloc).get();
         List<Chambre> chambres = (List<Chambre>) chambreRepository.findAllById(numChambre);
+
         for (Chambre chambre: chambres) {
             chambre.setBloc(bloc);
-            blocRepository.save(bloc);
+            chambreRepository.save(chambre);
         }
-        return bloc;
+
+        return blocRepository.save(bloc);
     }
 
 }
