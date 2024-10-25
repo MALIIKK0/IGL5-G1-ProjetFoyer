@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import tn.esprit.tpfoyer17.entities.Chambre;
-import tn.esprit.tpfoyer17.entities.enumerations.TypeChambre;
 import tn.esprit.tpfoyer17.repositories.ChambreRepository;
 
 import java.util.ArrayList;
@@ -95,6 +94,5 @@ public class ChambreServiceTest {
         verify(chambreRepository, times(1)).findByBlocFoyerUniversiteNomUniversite(nomUniversite);
     }
 
-    // Add more tests for each method as needed
 }
 
