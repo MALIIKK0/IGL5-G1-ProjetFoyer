@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: my-spring-boot-app
-        image: malik953/docker-spring-boot  # Assurez-vous que le nom est correct
+        image: malik953/docker-spring-boot:${IMAGE_TAG}  # Assurez-vous que le nom est correct
         ports:
         - containerPort: 8083  # Utilisez le port sur lequel votre application écoute
