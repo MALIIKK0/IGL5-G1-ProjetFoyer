@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 data "aws_iam_role" "lab_role" {
-  name = "LabRole"
+  name = "eksRole"
 }
 
 # Network creation
