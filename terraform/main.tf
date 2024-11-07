@@ -92,6 +92,7 @@ resource "aws_eks_node_group" "my_node_group" {
   }
 }
 
+# Data block moved outside
 data "aws_eks_cluster" "existing" {
   name = aws_eks_cluster.my_cluster.name
 }
