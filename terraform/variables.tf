@@ -21,6 +21,11 @@ variable "role_arn" {
   type        = string
   default     = "arn:aws:iam::897729104426:role/eksRole"  # Valeur par défaut
 }
+variable "role_arn_node" {
+  description = "ARN du rôle IAM pour node"
+  type        = string
+  default     = "arn:aws:iam::897729104426:instance-profile/EC2_Role"  # Valeur par défaut
+}
 
 variable "vpc_id" {
   description = "L'ID du VPC pour le cluster EKS"
