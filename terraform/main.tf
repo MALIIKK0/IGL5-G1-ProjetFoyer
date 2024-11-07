@@ -48,9 +48,6 @@ resource "aws_security_group" "eks_worker_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-data "aws_eks_cluster" "existing" {
-  name = aws_eks_cluster.my_cluster.name
-}
 
   ingress {
     from_port   = 30000
@@ -93,4 +90,7 @@ resource "aws_eks_node_group" "my_node_group" {
     max_size     = 3
     min_size     = 1
   }
+data "aws_eks_cluster" "existing" {
+  name = aws_eks_cluster.my_cluster.name
+}
 }
