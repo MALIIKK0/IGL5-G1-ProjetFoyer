@@ -3,13 +3,13 @@ provider "aws" {
 }
 
 resource "aws_vpc" "my_vpc" {
-  cidr_block = var.vpc_cidr  # Utilisation de la variable pour le CIDR
+  cidr_block = var.vpc_cidr
 }
 
 resource "aws_security_group" "eks_cluster_sg" {
   name        = "eks-cluster-sg-${var.cluster_name}"
   description = "Security group for EKS cluster ${var.cluster_name}"
-  vpc_id      = var.vpc_id  # Utilisation de la variable pour l'ID du VPC
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 8083
@@ -40,7 +40,7 @@ resource "aws_security_group" "eks_cluster_sg" {
 resource "aws_security_group" "eks_worker_sg" {
   name        = "eks-worker-sg-${var.cluster_name}"
   description = "Security group for EKS worker nodes ${var.cluster_name}"
-  vpc_id      = var.vpc_id  # Utilisation de la variable pour l'ID du VPC
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 8083
@@ -90,7 +90,8 @@ resource "aws_eks_node_group" "my_node_group" {
     max_size     = 3
     min_size     = 1
   }
+}
+
 data "aws_eks_cluster" "existing" {
   name = aws_eks_cluster.my_cluster.name
-}
 }
