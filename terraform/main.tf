@@ -82,7 +82,7 @@ resource "aws_eks_cluster" "my_cluster" {
 resource "aws_eks_node_group" "my_node_group" {
   cluster_name    = aws_eks_cluster.my_cluster.name
   node_group_name = "noeud1"
-  node_role_arn   = var.role_arn
+  node_role_arn   = var.role_arn_node
   subnet_ids      = var.subnet_ids
 
   scaling_config {
