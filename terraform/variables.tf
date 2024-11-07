@@ -19,7 +19,7 @@ variable "subnet_ids" {
 variable "role_arn" {
   description = "ARN du rôle IAM pour EKS"
   type        = string
-  default     = "arn:aws:iam::744983671605:role/eksRole"  # Valeur par défaut
+  default     = "arn:aws:iam::897729104426:role/eksRole"  # Valeur par défaut
 }
 
 variable "vpc_id" {
